@@ -18,7 +18,7 @@ public class PurchaseDataCalculatorController {
     @PostMapping(value = "/calculate")
     public ResponseEntity<Object> createUser(@RequestBody PurchaseDataDto purchaseDataDto) {
         try {
-            purchaseDataDto = purchaseDataCalculatorService.calculateTaxFields(purchaseDataDto);
+            purchaseDataDto = purchaseDataCalculatorService.calculatePurchaseData(purchaseDataDto);
             return new ResponseEntity<>(purchaseDataDto, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -7,11 +7,13 @@ import pt.calculator.tax.util.PurchaseDataCalculator;
 import pt.calculator.tax.util.PurchaseDataCalculatorAustria;
 import pt.calculator.tax.util.PurchaseDataDtoValidator;
 
+import java.text.DecimalFormat;
+
 @Service
 public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculatorService {
 
     @Override
-    public PurchaseDataDto calculateTaxFields(PurchaseDataDto purchaseDataDto) throws DataFieldException {
+    public PurchaseDataDto calculatePurchaseData(PurchaseDataDto purchaseDataDto) throws DataFieldException {
         PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
 
         if (!validator.validate()) {
@@ -30,27 +32,34 @@ public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculator
                 double grossValueResult = calculator.calculateGrossValueFromNetValue(netValue, vatRateValue);
                 double vatValueResult = calculator.calculateVatValueFromNetValue(netValue, vatRateValue);
 
-                purchaseDataDto.setGrossValue(String.valueOf(grossValueResult));
-                purchaseDataDto.setVatValue(String.valueOf(vatValueResult));
+                purchaseDataDto.setGrossValue(valueToString(grossValueResult));
+                purchaseDataDto.setVatValue(valueToString(vatValueResult));
             }
             case GROSS -> {
                 double netValueResult = calculator.calculateNetValueFromGrossValue(grossValue, vatRateValue);
                 double vatValueResult = calculator.calculateVatValueFromGrossValue(grossValue, vatRateValue);
 
-                purchaseDataDto.setNetValue(String.valueOf(netValueResult));
-                purchaseDataDto.setVatValue(String.valueOf(vatValueResult));
+                purchaseDataDto.setNetValue(valueToString(netValueResult));
+                purchaseDataDto.setVatValue(valueToString(vatValueResult));
             }
             case VAT -> {
                 double netValueResult = calculator.calculateNetValueFromVatValue(vatValue, vatRateValue);
                 double grossValueResult = calculator.calculateGrossValueFromVatValue(vatValue, vatRateValue);
 
-                purchaseDataDto.setNetValue(String.valueOf(netValueResult));
-                purchaseDataDto.setGrossValue(String.valueOf(grossValueResult));
+                purchaseDataDto.setNetValue(valueToString(netValueResult));
+                purchaseDataDto.setGrossValue(valueToString(grossValueResult));
             }
-            default -> { // Throw an Exception
+            default -> {
+                // Throw an Exception
             }
         }
 
         return purchaseDataDto;
     }
+
+    private String valueToString(double value) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(value).replace(",", ".");
+    }
+
 }
