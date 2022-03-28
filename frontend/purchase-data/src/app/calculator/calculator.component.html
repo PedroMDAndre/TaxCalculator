@@ -1,0 +1,17 @@
+<form (ngSubmit)="calculate()">
+    <label>Net Value:</label><br>
+    <input type="text" name="netValue" [(ngModel)]="purchaseDataDto.netValue"><br>
+
+    <label>Gross Value:</label><br>
+    <input type="text" name="grossValue" [(ngModel)]="purchaseDataDto.grossValue"><br>
+
+    <label>VAT Value:</label><br>
+    <input type="text" name="vatValue" [(ngModel)]="purchaseDataDto.vatValue"><br>
+
+    <label>VAT Rate:</label><br>
+    <input type="text" name="vatRate" [(ngModel)]="purchaseDataDto.vatRate"><br>
+
+    <button type="submit">Submit</button>
+
+    <p>{{ errorMessage }}</p>
+</form>
