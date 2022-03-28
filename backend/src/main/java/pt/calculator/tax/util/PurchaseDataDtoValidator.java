@@ -95,29 +95,21 @@ public class PurchaseDataDtoValidator {
             if (inputFieldValue != 0.0) {
 
                 switch (inputFieldToValidate) {
-                    case NET -> {
-                        netValue = inputFieldValue;
-                    }
-                    case GROSS -> {
-                        grossValue = inputFieldValue;
-                    }
-                    case VAT -> {
-                        vatValue = inputFieldValue;
-                    }
-                    case VAT_RATE -> {
-                        vatRateValue = inputFieldValue;
-                    }
+                    case NET -> netValue = inputFieldValue;
+                    case GROSS -> grossValue = inputFieldValue;
+                    case VAT -> vatValue = inputFieldValue;
+                    case VAT_RATE -> vatRateValue = inputFieldValue;
                 }
 
-                if (!InputField.VAT_RATE.equals(inputField)) {
+                if (!InputField.VAT_RATE.equals(inputFieldToValidate)) {
                     inputField = inputFieldToValidate;
                 }
 
             } else {
-                listErrors.add(String.format(ERROR_FIELD_IS_ZERO, inputField.getName()));
+                listErrors.add(String.format(ERROR_FIELD_IS_ZERO, inputFieldToValidate.getName()));
             }
         } catch (NumberFormatException e) {
-            listErrors.add(String.format(ERROR_FIELD_IS_NON_NUMERIC, inputField.getName()));
+            listErrors.add(String.format(ERROR_FIELD_IS_NON_NUMERIC, inputFieldToValidate.getName()));
         }
     }
 }

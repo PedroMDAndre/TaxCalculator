@@ -1,49 +1,56 @@
 package pt.calculator.tax.services;
 
 import org.springframework.stereotype.Service;
+import pt.calculator.tax.exceptions.DataFieldException;
 import pt.calculator.tax.model.PurchaseDataDto;
+import pt.calculator.tax.util.PurchaseDataCalculator;
+import pt.calculator.tax.util.PurchaseDataCalculatorAustria;
+import pt.calculator.tax.util.PurchaseDataDtoValidator;
 
 @Service
 public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculatorService {
 
     @Override
-    public PurchaseDataDto calculateTaxFields(PurchaseDataDto purchaseDataDto) {
-        double netValue = 0.0;
-        double grossValue = 0.0;
-        double vatValue = 0.0;
-        double vatRate = 0.0;
+    public PurchaseDataDto calculateTaxFields(PurchaseDataDto purchaseDataDto) throws DataFieldException {
+        PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
 
-        if (purchaseDataDto.getGrossValue() == null){
-            // throw exception
+        if (!validator.validate()) {
+            throw new DataFieldException(validator.getListErrors().toString());
         }
 
-        vatRate = Double.parseDouble(purchaseDataDto.getVatRate());
+        double netValue = validator.getNetValue();
+        double grossValue = validator.getGrossValue();
+        double vatValue = validator.getVatValue();
+        double vatRateValue = validator.getVatRateValue();
 
+        PurchaseDataCalculator calculator = new PurchaseDataCalculatorAustria();
+
+        switch (validator.getInputField()) {
+            case NET -> {
+                double grossValueResult = calculator.calculateGrossValueFromNetValue(netValue, vatRateValue);
+                double vatValueResult = calculator.calculateVatValueFromNetValue(netValue, vatRateValue);
+
+                purchaseDataDto.setGrossValue(String.valueOf(grossValueResult));
+                purchaseDataDto.setVatValue(String.valueOf(vatValueResult));
+            }
+            case GROSS -> {
+                double netValueResult = calculator.calculateNetValueFromGrossValue(grossValue, vatRateValue);
+                double vatValueResult = calculator.calculateVatValueFromGrossValue(grossValue, vatRateValue);
+
+                purchaseDataDto.setNetValue(String.valueOf(netValueResult));
+                purchaseDataDto.setVatValue(String.valueOf(vatValueResult));
+            }
+            case VAT -> {
+                double netValueResult = calculator.calculateNetValueFromVatValue(vatValue, vatRateValue);
+                double grossValueResult = calculator.calculateGrossValueFromVatValue(vatValue, vatRateValue);
+
+                purchaseDataDto.setNetValue(String.valueOf(netValueResult));
+                purchaseDataDto.setGrossValue(String.valueOf(grossValueResult));
+            }
+            default -> { // Throw an Exception
+            }
+        }
 
         return purchaseDataDto;
-    }
-
-    private double calculateNetValueFromGrossValue(double grossValue, double vatRate) {
-        return grossValue * (1 - vatRate);
-    }
-
-    private double calculateNetValueFromVatValue(double vatValue, double vatRate) {
-        return vatValue / (vatRate);
-    }
-
-    private double calculateGrossValueFromNetValue(double netValue, double vatRate) {
-        return netValue * (1 + vatRate);
-    }
-
-    private double calculateGrossValueFromVatValue(double vatValue, double vatRate) {
-        return vatValue * (1 + vatRate) / vatRate;
-    }
-
-    private double calculateVatValueFromNetValue(double netValue, double vatRate) {
-        return netValue * vatRate;
-    }
-
-    private double calculateVatValueFromGrossValue(double grossValue, double vatRate) {
-        return grossValue / vatRate;
     }
 }
