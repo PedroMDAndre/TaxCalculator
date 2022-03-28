@@ -9,15 +9,31 @@ import pt.calculator.tax.model.PurchaseDataDto;
 class PurchaseDataDtoValidatorTest {
 
     @Test
+    void testPurchaseDataDtoValidatorValidInputField(){
+        // Arrange
+        PurchaseDataDto purchaseDataDto = new PurchaseDataDto();
+        purchaseDataDto.setVatRate("0.2");
+        purchaseDataDto.setGrossValue("100.00");
+        PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
+
+        // Act
+        boolean isValid = validator.validate();
+
+        // Validate
+        Assertions.assertTrue(isValid);
+    }
+
+    @Test
     void testPurchaseDataDtoValidatorAllFieldsAreNull(){
         // Arrange
         PurchaseDataDto purchaseDataDto = new PurchaseDataDto();
         PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
 
         // Act
-        validator.validate();
+        boolean isValid =validator.validate();
 
         // Validate
+        Assertions.assertFalse(isValid);
         Assertions.assertEquals(2, validator.getListErrors().size());
         Assertions.assertEquals("VAT rate input is missing.", validator.getListErrors().get(0));
         Assertions.assertEquals("Missing amount input.", validator.getListErrors().get(1));
@@ -33,9 +49,10 @@ class PurchaseDataDtoValidatorTest {
         PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
 
         // Act
-        validator.validate();
+        boolean isValid =validator.validate();
 
         // Validate
+        Assertions.assertFalse(isValid);
         Assertions.assertEquals(1, validator.getListErrors().size());
         Assertions.assertEquals("More than one input field.", validator.getListErrors().get(0));
     }
@@ -49,11 +66,12 @@ class PurchaseDataDtoValidatorTest {
         PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
 
         // Act
-        validator.validate();
+        boolean isValid =validator.validate();
 
         // Validate
+        Assertions.assertFalse(isValid);
         Assertions.assertEquals(1, validator.getListErrors().size());
-        Assertions.assertEquals("VAT rate input is non-numeric.", validator.getListErrors().get(0));
+        Assertions.assertEquals("Net input is non-numeric.", validator.getListErrors().get(0));
     }
 
     @Test
@@ -65,10 +83,11 @@ class PurchaseDataDtoValidatorTest {
         PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
 
         // Act
-        validator.validate();
+        boolean isValid =validator.validate();
 
         // Validate
+        Assertions.assertFalse(isValid);
         Assertions.assertEquals(1, validator.getListErrors().size());
-        Assertions.assertEquals("VAT rate input is 0.", validator.getListErrors().get(0));
+        Assertions.assertEquals("Gross input is 0.", validator.getListErrors().get(0));
     }
 }
