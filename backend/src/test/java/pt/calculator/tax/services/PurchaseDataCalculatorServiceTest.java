@@ -11,15 +11,14 @@ import pt.calculator.tax.model.PurchaseDataDto;
 class PurchaseDataCalculatorServiceTest {
     @Autowired
     private PurchaseDataCalculatorService purchaseDataCalculatorService;
+    private final String netValue = "1000.00";
+    private final String grossValue = "1200.00";
+    private final String vatValue = "200.00";
+    private final String vatRate = "0.2";
 
     @Test
     void testCalculatePurchaseData() throws DataFieldException {
         // Arrange
-        String netValue = "1000.00";
-        String grossValue = "1200.00";
-        String vatValue = "200.00";
-        String vatRate = "0.2";
-
         PurchaseDataDto purchaseDataDto = new PurchaseDataDto();
         purchaseDataDto.setGrossValue(grossValue);
         purchaseDataDto.setVatRate(vatRate);
@@ -37,10 +36,6 @@ class PurchaseDataCalculatorServiceTest {
     @Test
     void testCalculatePurchaseDataThrowError() {
         // Arrange
-        var netValue = "1000.00";
-        var grossValue = "1200.00";
-        var vatRate = "0.2";
-
         PurchaseDataDto purchaseDataDto = new PurchaseDataDto();
         purchaseDataDto.setNetValue(netValue);
         purchaseDataDto.setGrossValue(grossValue);

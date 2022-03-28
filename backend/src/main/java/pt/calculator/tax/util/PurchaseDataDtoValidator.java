@@ -68,12 +68,12 @@ public class PurchaseDataDtoValidator {
             validateInputField(netValueStr, InputField.NET);
         }
 
-        if (grossValueStr != null) {
+        if (grossValueStr != null && !grossValueStr.isEmpty()) {
             numberOfInputFields++;
             validateInputField(grossValueStr, InputField.GROSS);
         }
 
-        if (vatValueStr != null) {
+        if (vatValueStr != null && !vatValueStr.isEmpty()) {
             numberOfInputFields++;
             validateInputField(vatValueStr, InputField.VAT);
         }

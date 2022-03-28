@@ -12,6 +12,8 @@ import java.text.DecimalFormat;
 @Service
 public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculatorService {
 
+    private static final String UNKNOWN_FIELD = "Unknown field.";
+
     @Override
     public PurchaseDataDto calculatePurchaseData(PurchaseDataDto purchaseDataDto) throws DataFieldException {
         PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
@@ -35,6 +37,7 @@ public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculator
                 purchaseDataDto.setGrossValue(valueToString(grossValueResult));
                 purchaseDataDto.setVatValue(valueToString(vatValueResult));
             }
+
             case GROSS -> {
                 double netValueResult = calculator.calculateNetValueFromGrossValue(grossValue, vatRateValue);
                 double vatValueResult = calculator.calculateVatValueFromGrossValue(grossValue, vatRateValue);
@@ -42,6 +45,7 @@ public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculator
                 purchaseDataDto.setNetValue(valueToString(netValueResult));
                 purchaseDataDto.setVatValue(valueToString(vatValueResult));
             }
+
             case VAT -> {
                 double netValueResult = calculator.calculateNetValueFromVatValue(vatValue, vatRateValue);
                 double grossValueResult = calculator.calculateGrossValueFromVatValue(vatValue, vatRateValue);
@@ -49,9 +53,8 @@ public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculator
                 purchaseDataDto.setNetValue(valueToString(netValueResult));
                 purchaseDataDto.setGrossValue(valueToString(grossValueResult));
             }
-            default -> {
-                // Throw an Exception
-            }
+
+            default -> throw new DataFieldException(UNKNOWN_FIELD);
         }
 
         return purchaseDataDto;
