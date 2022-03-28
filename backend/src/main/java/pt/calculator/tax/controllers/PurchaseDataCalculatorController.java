@@ -19,9 +19,9 @@ public class PurchaseDataCalculatorController {
     public ResponseEntity<Object> createUser(@RequestBody PurchaseDataDto purchaseDataDto) {
         try {
             purchaseDataDto = purchaseDataCalculatorService.calculateTaxFields(purchaseDataDto);
-            return new ResponseEntity<>(purchaseDataDto, HttpStatus.CREATED);
+            return new ResponseEntity<>(purchaseDataDto, HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }
