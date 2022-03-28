@@ -8,6 +8,7 @@ import pt.calculator.tax.util.PurchaseDataCalculatorAustria;
 import pt.calculator.tax.util.PurchaseDataDtoValidator;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 @Service
 public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculatorService {
@@ -19,7 +20,7 @@ public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculator
         PurchaseDataDtoValidator validator = new PurchaseDataDtoValidator(purchaseDataDto);
 
         if (!validator.validate()) {
-            throw new DataFieldException(validator.getListErrors().toString());
+            throw new DataFieldException(errorMessage(validator.getListErrors()));
         }
 
         double netValue = validator.getNetValue();
@@ -65,4 +66,11 @@ public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculator
         return df.format(value).replace(",", ".");
     }
 
+    private String errorMessage(List<String> listOfErrors) {
+        StringBuilder sb = new StringBuilder();
+        for (String error : listOfErrors) {
+            sb.append(error).append(" ");
+        }
+        return sb.toString().trim();
+    }
 }
