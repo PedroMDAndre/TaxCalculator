@@ -1,25 +1,46 @@
 <form [formGroup]="calculateForm" (ngSubmit)="calculate()">
     <div class="row">
-        <input type="radio" id="radioNetValue" formControlName="radioInputData" value="net" (onclick)="disable()">
-        <label for="radioNetValue">Net Value:</label><br>
-        <input type="text" [(ngModel)]="purchaseDataDto.netValue" formControlName="netValue">
+        <div class="column">
+            <input type="radio" id="radioNetValue" formControlName="radioInputData" value="net" (change)="disable()">
+            <label for="radioNetValue">Net Value</label>
+        </div>
+        <div class="column">
+            <input type="text" [(ngModel)]="purchaseDataDto.netValue" formControlName="netValue">
+        </div>
     </div>
 
     <div class="row">
-        <input type="radio" id="radioGrossValue" formControlName="radioInputData" value="gross" (onclick)="disable()">
-        <label for="radioGrossValue">Gross Value:</label>
-        <input type="text" formControlName="grossValue" [(ngModel)]="purchaseDataDto.grossValue">
+        <div class="column">
+            <input type="radio" id="radioGrossValue" formControlName="radioInputData" value="gross"
+                (change)="disable()">
+            <label for="radioGrossValue">Gross Value</label>
+        </div>
+        <div class="column">
+            <input type="text" formControlName="grossValue" [(ngModel)]="purchaseDataDto.grossValue">
+        </div>
     </div>
 
     <div class="row">
-        <input type="radio" id="radioVatValue" formControlName="radioInputData" value="vat" (onclick)="disable()">
-        <label for="radioVatValue">VAT Value:</label>
-        <input type="text" formControlName="vatValue" [(ngModel)]="purchaseDataDto.vatValue">
+        <div class="column">
+            <input type="radio" id="radioVatValue" formControlName="radioInputData" value="vat" (change)="disable()">
+            <label for="radioVatValue">VAT Value</label>
+        </div>
+        <div class="column">
+            <input type="text" formControlName="vatValue" [(ngModel)]="purchaseDataDto.vatValue">
+        </div>
     </div>
 
     <div class="row">
-        <label>VAT Rate:</label><br>
-        <input type="text" formControlName="vatRate" [(ngModel)]="purchaseDataDto.vatRate">
+        <div class="column">
+            <label>VAT Rate</label>
+        </div>
+        <div class="column">
+            <select formControlName="vatRate">
+                <option *ngFor="let taxRate of taxRateList" [value]="taxRate">
+                    {{ taxRate * 100}}%
+                </option>
+            </select>
+        </div>
     </div>
 
     <button type="submit">Submit</button>
