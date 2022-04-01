@@ -1,15 +1,26 @@
 <form [formGroup]="calculateForm" (ngSubmit)="calculate()">
-    <label>Net Value:</label><br>
-    <input type="text" [(ngModel)]="purchaseDataDto.netValue" formControlName = "netValue"><br>
+    <div class="row">
+        <input type="radio" id="radioNetValue" formControlName="radioInputData" value="net" (onclick)="disable()">
+        <label for="radioNetValue">Net Value:</label><br>
+        <input type="text" [(ngModel)]="purchaseDataDto.netValue" formControlName="netValue">
+    </div>
 
-    <label>Gross Value:</label><br>
-    <input type="text" [(ngModel)]="purchaseDataDto.grossValue" formControlName = "grossValue"><br>
+    <div class="row">
+        <input type="radio" id="radioGrossValue" formControlName="radioInputData" value="gross" (onclick)="disable()">
+        <label for="radioGrossValue">Gross Value:</label>
+        <input type="text" formControlName="grossValue" [(ngModel)]="purchaseDataDto.grossValue">
+    </div>
 
-    <label>VAT Value:</label><br>
-    <input type="text" name="vatValue" [(ngModel)]="purchaseDataDto.vatValue" formControlName="vatValue"><br>
+    <div class="row">
+        <input type="radio" id="radioVatValue" formControlName="radioInputData" value="vat" (onclick)="disable()">
+        <label for="radioVatValue">VAT Value:</label>
+        <input type="text" formControlName="vatValue" [(ngModel)]="purchaseDataDto.vatValue">
+    </div>
 
-    <label>VAT Rate:</label><br>
-    <input type="text" name="vatRate" [(ngModel)]="purchaseDataDto.vatRate" formControlName="vatRate"><br>
+    <div class="row">
+        <label>VAT Rate:</label><br>
+        <input type="text" formControlName="vatRate" [(ngModel)]="purchaseDataDto.vatRate">
+    </div>
 
     <button type="submit">Submit</button>
 
