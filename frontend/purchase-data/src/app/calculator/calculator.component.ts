@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { CalculatorService } from '../calculator-service/calculator.service';
 import { PurchaseDataDto } from '../model/purchase-data-dto';
 
@@ -16,9 +17,18 @@ export class CalculatorComponent {
     vatRate: "0.2"
   };
 
+  taxRateList: number[] = [0.1, 0.13, 0.2];
+
   errorMessage: string = '';
 
-  constructor(private calculatorService: CalculatorService) { }
+ calculateForm: FormGroup = this.formBuilder.group({
+    netValue: {value: undefined, disabled: true},
+    grossValue: {value: undefined, disabled: true},
+    vatValue: {value: undefined, disabled: true},
+    vatRate: {value: undefined}
+  });
+
+  constructor(private calculatorService: CalculatorService, private formBuilder: FormBuilder) { }
 
   calculate(): void {
     this.errorMessage = '';
