@@ -61,6 +61,12 @@ public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculator
         return purchaseDataDto;
     }
 
+    @Override
+    public List<Double> getVatRates() {
+        Double[] vatRates = {0.1, 0.13, 0.2};
+        return List.of(vatRates);
+    }
+
     private String valueToString(double value) {
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(value).replace(",", ".");
