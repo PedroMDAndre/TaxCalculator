@@ -42,7 +42,7 @@ export class CalculatorComponent implements OnInit {
           this.vatRate.setValue(this.taxRateList[0]);
         }
       },
-      (error) => { this.errorMessage = error.error }
+      (errorObject) => { this.errorMessage = errorObject.error.message }
     );
   }
 
@@ -76,15 +76,11 @@ export class CalculatorComponent implements OnInit {
 
     this.calculatorService.calculatePurchaseData(this.purchaseDataDto).subscribe(
       (purchaseDataDto) => { this.purchaseDataDto = purchaseDataDto },
-      (error) => { this.errorMessage = error.error }
+      (errorObject) => { this.errorMessage = errorObject.error.message }
     )
   }
 
   disable(): void {
-    this.purchaseDataDto = {
-      vatRate: this.purchaseDataDto.vatRate
-    };
-
     this.netValue.disable();
     this.grossValue.disable();
     this.vatValue.disable();
