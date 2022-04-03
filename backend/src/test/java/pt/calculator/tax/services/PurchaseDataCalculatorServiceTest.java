@@ -46,6 +46,6 @@ class PurchaseDataCalculatorServiceTest {
                 () -> purchaseDataCalculatorService.calculatePurchaseData(purchaseDataDto));
 
         // Assert
-        Assertions.assertEquals("[More than one input field.]", exception.getMessage());
+        Assertions.assertEquals("More than one input field.", exception.getMessage());
     }
 }
