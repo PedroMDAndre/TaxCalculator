@@ -15,4 +15,8 @@ export class CalculatorService {
   calculatePurchaseData(purchaseDataDto: PurchaseDataDto): Observable<PurchaseDataDto> {
     return this.http.post<PurchaseDataDto>(this.url + '/calculate', purchaseDataDto)
   }
+
+  getVatRates(): Observable<Array<number>> {
+    return this.http.get<Array<number>>(this.url + '/rates')
+  }
 }

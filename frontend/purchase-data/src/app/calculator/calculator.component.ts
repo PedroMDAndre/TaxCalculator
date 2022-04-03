@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { CalculatorService } from '../calculator-service/calculator.service';
 import { PurchaseDataDto } from '../model/purchase-data-dto';
 
@@ -10,17 +10,11 @@ import { PurchaseDataDto } from '../model/purchase-data-dto';
 })
 export class CalculatorComponent implements OnInit {
 
-  purchaseDataDto: PurchaseDataDto = {
-    netValue: "100",
-    grossValue: undefined,
-    vatValue: undefined,
-    vatRate: "0.2"
-  }; // start with no values
+  purchaseDataDto: PurchaseDataDto = {};
 
-  taxRateList: number[] = [0.1, 0.13, 0.2]; // to be retrieved from API
+  taxRateList: number[] = [];
 
   errorMessage: string = '';
-
 
   private netValue: FormControl = new FormControl('');
   private grossValue: FormControl = new FormControl('');
@@ -37,14 +31,49 @@ export class CalculatorComponent implements OnInit {
   });
 
 
-  constructor(private calculatorService: CalculatorService, private formBuilder: FormBuilder) { }
+  constructor(private calculatorService: CalculatorService) { }
 
   ngOnInit(): void {
-  
+    this.disable();
+    this.calculatorService.getVatRates().subscribe(
+      (vatRates) => {
+        if (vatRates && vatRates.length > 0) {
+          this.taxRateList = vatRates;
+          this.vatRate.setValue(this.taxRateList[0]);
+        }
+      },
+      (error) => { this.errorMessage = error.error }
+    );
   }
 
   calculate(): void {
     this.errorMessage = '';
+
+    switch (this.radioInputData.value) {
+      case "net": {
+        this.purchaseDataDto = {
+          netValue: this.purchaseDataDto.netValue
+        };
+        break
+      }
+
+      case "gross": {
+        this.purchaseDataDto = {
+          grossValue: this.purchaseDataDto.grossValue
+        };
+        break;
+      }
+
+      case "vat": {
+        this.purchaseDataDto = {
+          vatValue: this.purchaseDataDto.vatValue
+        };
+        break;
+      }
+    }
+    this.purchaseDataDto.vatRate = this.vatRate.value;
+
+
     this.calculatorService.calculatePurchaseData(this.purchaseDataDto).subscribe(
       (purchaseDataDto) => { this.purchaseDataDto = purchaseDataDto },
       (error) => { this.errorMessage = error.error }
@@ -52,8 +81,30 @@ export class CalculatorComponent implements OnInit {
   }
 
   disable(): void {
-   
+    this.purchaseDataDto = {
+      vatRate: this.purchaseDataDto.vatRate
+    };
 
+    this.netValue.disable();
+    this.grossValue.disable();
+    this.vatValue.disable();
+
+    switch (this.radioInputData.value) {
+      case "net": {
+        this.netValue.enable();
+        break
+      }
+
+      case "gross": {
+        this.grossValue.enable();
+        break;
+      }
+
+      case "vat": {
+        this.vatValue.enable();
+        break;
+      }
+    }
   }
 
 }
