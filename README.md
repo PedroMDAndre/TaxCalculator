@@ -22,3 +22,14 @@ As an API user, I would like to calculate Net, Gross, VAT amounts for purchases 
 
 Link used to test the calculation logic: 
 http://www.calkoo.com/?lang=3&page=8
+
+
+## Frontend
+http://localhost:4200/
+
+## API documentation:
+http://localhost:8080/v3/api-docs/
+
+## Swagger UI
+http://localhost:8080/
+http://localhost:8080/swagger-ui/index.html
