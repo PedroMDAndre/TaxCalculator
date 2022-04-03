@@ -23,7 +23,7 @@ public class PurchaseDataDtoValidator {
     private double vatRateValue;
 
     public PurchaseDataDtoValidator(PurchaseDataDto purchaseDataDto) {
-        this.purchaseDataDto = purchaseDataDto;
+        this.purchaseDataDto = purchaseDataDto.copy();
         this.listErrors = new ArrayList<>();
     }
 
