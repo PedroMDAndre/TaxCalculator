@@ -27,7 +27,7 @@ http://www.calkoo.com/?lang=3&page=8
 ## Frontend
 http://localhost:4200/
 
-## API documentation:
+## API documentation
 http://localhost:8080/v3/api-docs/
 
 ## Swagger UI
