@@ -26,13 +26,16 @@ import java.util.List;
 public class PurchaseDataCalculatorController {
     private static final String CANNOT_GET_TAX_RATES = "It was not possible to get the tax rates.";
 
-    @Autowired
-    private PurchaseDataCalculatorService purchaseDataCalculatorService;
+    private final PurchaseDataCalculatorService purchaseDataCalculatorService;
+
+    public PurchaseDataCalculatorController(PurchaseDataCalculatorService purchaseDataCalculatorService) {
+        this.purchaseDataCalculatorService = purchaseDataCalculatorService;
+    }
 
     @Hidden
     @GetMapping(value = "/")
     public RedirectView mainPage() {
-        return  new RedirectView("/swagger-ui/index.html");
+        return new RedirectView("/swagger-ui/index.html");
     }
 
     @Operation(summary = "Calculate Purchase data. Only one input field should be given and the tax rate.")

@@ -14,7 +14,7 @@ export class CalculatorComponent implements OnInit {
 
   taxRateList: number[] = [];
 
-  errorMessage: string = '';
+  errorMessage = '';
 
   private netValue: FormControl = new FormControl('');
   private grossValue: FormControl = new FormControl('');
@@ -50,21 +50,21 @@ export class CalculatorComponent implements OnInit {
     this.errorMessage = '';
 
     switch (this.radioInputData.value) {
-      case "net": {
+      case 'net': {
         this.purchaseDataDto = {
           netValue: this.purchaseDataDto.netValue
         };
-        break
+        break;
       }
 
-      case "gross": {
+      case 'gross': {
         this.purchaseDataDto = {
           grossValue: this.purchaseDataDto.grossValue
         };
         break;
       }
 
-      case "vat": {
+      case 'vat': {
         this.purchaseDataDto = {
           vatValue: this.purchaseDataDto.vatValue
         };
@@ -86,17 +86,17 @@ export class CalculatorComponent implements OnInit {
     this.vatValue.disable();
 
     switch (this.radioInputData.value) {
-      case "net": {
+      case 'net': {
         this.netValue.enable();
-        break
+        break;
       }
 
-      case "gross": {
+      case 'gross': {
         this.grossValue.enable();
         break;
       }
 
-      case "vat": {
+      case 'vat': {
         this.vatValue.enable();
         break;
       }

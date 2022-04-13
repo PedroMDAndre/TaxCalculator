@@ -2,6 +2,7 @@ package pt.calculator.tax.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 @Getter
 @Setter
@@ -13,10 +14,7 @@ public class PurchaseDataDto {
 
     public PurchaseDataDto copy() {
         PurchaseDataDto copyDto =  new PurchaseDataDto();
-        copyDto.setNetValue(this.netValue);
-        copyDto.setGrossValue(this.grossValue);
-        copyDto.setVatValue(this.vatValue);
-        copyDto.setVatRate(this.vatRate);
+        BeanUtils.copyProperties(this, copyDto);
 
         return copyDto;
     }
