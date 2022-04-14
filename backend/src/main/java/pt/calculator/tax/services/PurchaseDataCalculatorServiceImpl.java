@@ -1,5 +1,6 @@
 package pt.calculator.tax.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.calculator.tax.exceptions.DataFieldException;
 import pt.calculator.tax.model.PurchaseDataDto;
@@ -14,6 +15,9 @@ import java.util.List;
 public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculatorService {
 
     private static final String UNKNOWN_FIELD = "Unknown field.";
+
+    @Value("#{'${vatRates}'.split(',')}")
+    private List<Double> vatRates;
 
     @Override
     public PurchaseDataDto calculatePurchaseData(PurchaseDataDto purchaseDataDto) throws DataFieldException {
@@ -63,8 +67,7 @@ public class PurchaseDataCalculatorServiceImpl implements PurchaseDataCalculator
 
     @Override
     public List<Double> getVatRates() {
-        Double[] vatRates = {0.1, 0.13, 0.2};
-        return List.of(vatRates);
+        return vatRates;
     }
 
     private String valueToString(double value) {
