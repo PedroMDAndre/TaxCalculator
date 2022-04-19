@@ -7,8 +7,9 @@ import lombok.Setter;
 @Setter
 public class ErrorMessage {
     private String message;
+    private long timestamp;
+    private int status;
+    private String error;
+    private String path;
 
-    public ErrorMessage(String message) {
-        this.message = message;
-    }
 }

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 import pt.calculator.tax.exceptions.DataFieldException;
-import pt.calculator.tax.model.ErrorMessage;
 import pt.calculator.tax.model.PurchaseDataDto;
 import pt.calculator.tax.services.PurchaseDataCalculatorService;
 
@@ -35,26 +35,24 @@ public class PurchaseDataCalculatorControllerImpl implements PurchaseDataCalcula
     @Override
     @PostMapping(value = "/calculate",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createUser(@RequestBody PurchaseDataDto purchaseDataDto) {
+    public ResponseEntity<PurchaseDataDto> createUser(@RequestBody PurchaseDataDto purchaseDataDto) {
         try {
             purchaseDataDto = purchaseDataCalculatorService.calculatePurchaseData(purchaseDataDto);
             return ResponseEntity.status(HttpStatus.OK).body(purchaseDataDto);
         } catch (DataFieldException e) {
-            ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     @Override
     @GetMapping(value = "/rates",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getRates() {
+    public ResponseEntity<List<Double>> getRates() {
         try {
             List<Double> vatRates = purchaseDataCalculatorService.getVatRates();
             return ResponseEntity.status(HttpStatus.OK).body(vatRates);
         } catch (Exception e) {
-            ErrorMessage errorMessage = new ErrorMessage(CANNOT_GET_TAX_RATES);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, CANNOT_GET_TAX_RATES);
         }
     }
 }

@@ -34,7 +34,7 @@ public interface PurchaseDataCalculatorController {
     })
     @PostMapping(value = "/calculate",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Object> createUser(@RequestBody PurchaseDataDto purchaseDataDto);
+    ResponseEntity<PurchaseDataDto> createUser(@RequestBody PurchaseDataDto purchaseDataDto);
 
     @Operation(summary = "Tax rates.")
     @ApiResponses(value = {
@@ -48,5 +48,5 @@ public interface PurchaseDataCalculatorController {
     })
     @GetMapping(value = "/rates",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Object> getRates();
+    ResponseEntity<List<Double>> getRates();
 }
